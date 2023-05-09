@@ -1,1 +1,1 @@
-In order to successfully connect to the two databases locally create a .env.development file connnecting to the database nc_games and a .env.test file connecting to the database nc_games_test.
+In order to successfully connect to the two databases locally create a .env.development file with PGDATABASE=nc_games inside and a .env.test file with PGDATABASE=nc_games_test written inside to connect to the corresponding databases.
