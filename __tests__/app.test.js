@@ -53,8 +53,6 @@ describe("/api", () => {
         .get("/api/reviews/1")
         .expect(200)
         .then((res) => {
-            // expect(res.body.review.length).toBe(1)
-            console.log(res.body)
             const {review} = res.body
             expect(typeof review.review_id).toBe("number")
             expect(typeof review.title).toBe("string")
@@ -68,7 +66,7 @@ describe("/api", () => {
             
         })
     } )
-    test("GET - status 404 - invalid restaurant ID returns error", ()=> {
+    test("GET - status 404 - invalid review ID returns error", ()=> {
         return request(app)
         .get("/api/reviews/3000")
         .expect(404)
@@ -76,18 +74,17 @@ describe("/api", () => {
         expect(res.body).toEqual({msg:"Error - review ID not found"})
     })
   })
+  test("GET - status 400 - review ID not of correct form returns error", ()=> {
+    return request(app)
+    .get("/api/reviews/nonsense")
+    .expect(400)
+    .then((res) => {
+    expect(res.body).toEqual({msg:"Error - not a review ID"})
+})
+})
 })
 
-  describe("GET request to unavailable route responds with error",()=>{
-    test("/api/not-a-route - status 404 - responds with error message ", () => {
-        return request (app)
-        .get("/api/not-a-route")
-        .expect(404)
-        .then((res)=>{
-            expect(res.body).toEqual({msg: 'Error - not found'})
-        })
-    })
-  })
+
 
 describe("GET request to unavailable route responds with error", () => {
   test("/api/not-a-route - status 404 - responds with error message ", () => {

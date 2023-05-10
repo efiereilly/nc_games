@@ -22,8 +22,19 @@ app.get("*", (req,res) => {res.status(404).send({ msg : "Error - not found"})} )
 
 
 app.use((err, req, res, next) => {
-    res.status(err.status).send({ msg: err.msg });
+    if(err.status && err.msg) {
+    res.status(err.status).send({ msg: err.msg })
+    }
+    else {
+        next(err)
+    }
   });
+
+  app.use((err, req, res, next) => {
+    if (err.code === '22P02') {
+      res.status(400).send({ msg: 'Error - not a review ID' });
+    } else res.status(500).send({ msg: 'Internal Server Error' });
+  }); 
 
 
 module.exports =app
