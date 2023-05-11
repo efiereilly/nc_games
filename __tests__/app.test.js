@@ -107,6 +107,50 @@ describe("/api/reviews", () => {
     })
 })
 
+describe("/api/reviews/:review_id/comments", ()=> {
+    test ("GET - status 200 - responds with an array of comments for the given review id, each having properties comment_id, votes, created_at, author, body, review_id and sorted by date", ()=>{
+        return request(app)
+        .get("/api/reviews/2/comments")
+        .expect(200)
+        .then((res)=>{
+          expect(res.body.comments.length).toBe(3)
+          expect(res.body.comments).toBeSortedBy("created_at", {descending: true})
+          res.body.comments.forEach(comment => {
+            expect(typeof comment.comment_id).toBe("number")
+            expect(typeof comment.votes).toBe("number")
+            expect(typeof comment.created_at).toBe("string")
+            expect(typeof comment.author).toBe("string")
+            expect(typeof comment.body).toBe("string")
+            expect(typeof comment.review_id).toBe("number")
+            
+          })
+        })
+    })
+    test("GET - status 200 - responds with an empty array if a valid review ID is given which has no comments",()=>{
+      return request(app)
+      .get("/api/reviews/8/comments")
+      .expect(200)
+      .then((res)=>{
+        expect(res.body.comments).toEqual([])
+      })
+    })
+    test ("GET - status 400 - review ID not of correct form returns bad request error", () => {
+      return request(app)
+      .get("/api/reviews/nonsense/comments")
+      .expect(400)
+      .then((res) => {
+      expect(res.body).toEqual({msg:"Error - bad request!"})
+  })
+  })
+  test("GET - status 404 - invalid review ID returns ID not found error", ()=> {
+    return request(app)
+    .get("/api/reviews/3000/comments")
+    .expect(404)
+    .then((res) => {
+    expect(res.body).toEqual({msg:"Error - review ID not found"})
+})
+})
+})
 
 
 describe("GET request to unavailable route responds with error", () => {

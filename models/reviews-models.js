@@ -1,5 +1,14 @@
 const connection = require("../db/connection")
 
+exports.checkReviewExists = (review_id) => {
+    return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id]).then((result) => {
+        if(result.rows.length === 0){
+            return Promise.reject({ status: 404, msg: "Error - review ID not found"})
+        }
+        
+    })
+}
+
 exports.fetchReviews = (restaurant_id) => {
     return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [restaurant_id]).then((result) => {
         if(result.rows.length === 0){
