@@ -113,6 +113,7 @@ describe("/api/reviews/:review_id/comments", ()=> {
         .get("/api/reviews/2/comments")
         .expect(200)
         .then((res)=>{
+          expect(res.body.comments.length).toBe(3)
           expect(res.body.comments).toBeSortedBy("created_at", {descending: true})
           res.body.comments.forEach(comment => {
             expect(typeof comment.comment_id).toBe("number")
