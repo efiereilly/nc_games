@@ -48,7 +48,7 @@ describe("/api", () => {
 
 
   describe("/api/reviews/:review_id", () => {
-    test("GET - status 200 - responds with array of review object with properties review_id title, review_body, designer, review_img_url, votes, category, owner and created_at", () => {
+    test("GET - status 200 - responds with review object with properties review_id title, review_body, designer, review_img_url, votes, category, owner and created_at", () => {
         return request(app)
         .get("/api/reviews/1")
         .expect(200)
@@ -82,6 +82,28 @@ describe("/api", () => {
     expect(res.body).toEqual({msg:"Error - bad request!"})
 })
 })
+})
+
+describe("/api/reviews", () => {
+    test("GET - status 200 - responds with array of review objects which have properties owner, title, review_id, category, review_img_url, created_at, votes, designer and comment_count", () => {
+        return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then((res)=>{
+            expect(res.body.reviews.length).toBe(13)
+            res.body.reviews.forEach(review => {
+                expect(typeof review.owner).toBe("string")
+                expect(typeof review.title).toBe("string")
+                expect(typeof review.review_id).toBe("number")
+                expect(typeof review.category).toBe("string")
+                expect(typeof review.review_img_url).toBe("string")
+                expect(typeof review.created_at).toBe("string")
+                expect(typeof review.votes).toBe("number")
+                expect(typeof review.designer).toBe("string")
+                expect(typeof review.comment_count).toBe("string")
+            })
+        })
+    })
 })
 
 
