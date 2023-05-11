@@ -90,6 +90,7 @@ describe("/api/reviews", () => {
         .get("/api/reviews")
         .expect(200)
         .then((res)=>{
+            expect(res.body.reviews).toBeSortedBy("created_at", {descending: true})
             expect(res.body.reviews.length).toBe(13)
             res.body.reviews.forEach(review => {
                 expect(typeof review.owner).toBe("string")
@@ -100,7 +101,7 @@ describe("/api/reviews", () => {
                 expect(typeof review.created_at).toBe("string")
                 expect(typeof review.votes).toBe("number")
                 expect(typeof review.designer).toBe("string")
-                expect(typeof review.comment_count).toBe("string")
+                expect(typeof review.comment_count).toBe("number")
             })
         })
     })
