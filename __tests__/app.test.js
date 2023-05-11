@@ -84,6 +84,13 @@ describe("/api", () => {
 })
 })
 
+// describe("/api/reviews/:review_id/comments", ()=> {
+//     test ("GET - status 200 - responds with an array of comments for the given review id, each having properties comment_id, votes, created_at, author, body, review_id and sorted by date", ()=>{
+//         return request(app)
+//         .get("/api/reviews/3/comments")
+//         .expect(200)
+//     })
+// })
 
 
 describe("GET request to unavailable route responds with error", () => {
