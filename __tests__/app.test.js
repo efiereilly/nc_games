@@ -79,7 +79,7 @@ describe("/api", () => {
     .get("/api/reviews/nonsense")
     .expect(400)
     .then((res) => {
-    expect(res.body).toEqual({msg:"Error - not a review ID"})
+    expect(res.body).toEqual({msg:"Error - bad request!"})
 })
 })
 })
