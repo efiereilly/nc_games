@@ -107,6 +107,21 @@ describe("/api/reviews", () => {
     })
 })
 
+// describe("post to /api/reviews/:review_id/comments", () => {
+//   test("POST - status 201 - responds with the posted comment", ()=>{
+//     return request(app)
+//     .post("/api/reviews/8/comments")
+//     .expect(201)
+//     .send({comment : {username: "efie", body:"great game" }})
+//     .then((result) => {
+//     const {username , body} = result.body.comment
+//     expect(username).toBe("efie")
+//     expect(body).toBe("great game")
+//   }
+//     )
+//   })
+// })
+
 
 
 describe("GET request to unavailable route responds with error", () => {

@@ -18,6 +18,8 @@ app.get("/api/reviews/:restaurant_id", getReviews)
 
 app.get("/api", getEndpoints)
 
+// app.post("/api/reviews/:review_id/comments", postComments)
+
 
 app.get("*", (req,res) => {res.status(404).send({ msg : "Error - not found"})} )
 
