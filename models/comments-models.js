@@ -17,7 +17,7 @@ exports.fetchComments = (review_id) => {
 
 exports.insertComment = (comment, review_id) => {
   const intID = Number(review_id);
-  if (Object.keys(comment).length==2 && comment.body && comment.username) {
+  if (comment.body && comment.username) {
     const { username, body } = comment;
     return checkReviewExists(review_id)
       .then(() => {

@@ -167,6 +167,22 @@ test("POST - status 201 - responds with the added comment object", () => {
 
   }))
 })
+test ("POST - status 201 - if comment has additional properties these do not impact comment posting", () => {
+  return request(app)
+  .post("/api/reviews/3/comments")
+  .expect(201)
+  .send({username:'dav3rid', body:'great game', votes:300, anything_else:"here"})
+  .then((result) => {
+    const {comment}= result.body
+    expect(Object.keys(comment).length).toBe(6)
+    expect(comment.body).toBe('great game')
+    expect(comment.author).toBe("dav3rid")
+    expect(comment.votes).toBe(0)
+    expect(comment.review_id).toBe(3)
+    expect(typeof comment.comment_id).toBe('number')
+    expect(typeof comment.created_at).toBe("string")
+})
+})
 test ("POST - status 400 - review ID not of correct form returns bad request error", () => {
   return request(app)
   .post("/api/reviews/nonsense/comments")
@@ -185,15 +201,7 @@ test ("POST - status 400 - if property is missing from the comment object in the
   expect(res.body).toEqual({msg:"Error - bad request, incorrect properties!"})
 })
 })
-test ("POST - status 400 - if comment has additional properties", () => {
-  return request(app)
-  .post("/api/reviews/3/comments")
-  .expect(400)
-  .send({username:'dav3rid', body:'great game', votes:300})
-  .then((res) => {
-  expect(res.body).toEqual({msg:"Error - bad request, incorrect properties!"})
-})
-})
+
 test("POST - status 404 - invalid review ID returns ID not found error", ()=> {
   return request(app)
   .post("/api/reviews/3000/comments")
