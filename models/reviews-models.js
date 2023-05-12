@@ -1,14 +1,5 @@
 const connection = require("../db/connection")
 
-exports.getAuthor = (review_id) => {
-    return connection.query(`SELECT owner FROM reviews WHERE review_id=$1;`,[review_id]).then((result) =>
-    {if(result.rows.length === 0){
-        return Promise.reject({ status: 404, msg: "Error - review ID not found"})
-    }
-    else{
-    const {owner} = result.rows[0]
-    return owner}})
-}
 
 exports.checkReviewExists = (review_id) => {
     return connection.query(`SELECT * FROM reviews WHERE review_id = $1;`, [review_id]).then((result) => {
