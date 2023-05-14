@@ -82,6 +82,86 @@ describe("/api", () => {
     expect(res.body).toEqual({msg:"Error - bad request!"})
 })
 })
+  test("PATCH - status 200 responds with the updated review", () => {
+    return request(app)
+    .patch("/api/reviews/5")
+    .expect(200)
+    .send({inc_votes: 10})
+    .then((res) => {
+      const {review}=res.body
+      expect(review.votes).toBe(15)
+      expect(review.owner).toBe("mallionaire")
+      expect(review.title).toBe("Proident tempor et.")
+      expect(review.review_id).toBe(5)
+      expect(review.category).toBe("social deduction")
+      expect(review.designer).toBe("Seymour Buttz")
+      expect(typeof review.review_img_url).toBe("string")
+      expect(typeof review.created_at).toBe("string")     
+    })
+  })
+  test("PATCH - status 200 responds with the updated review with decreased votes", () => {
+    return request(app)
+    .patch("/api/reviews/12")
+    .expect(200)
+    .send({inc_votes: -100})
+    .then((res) => {
+      const {review}=res.body
+      expect(review.votes).toBe(0)
+      expect(review.title).toBe("Scythe; you're gonna need a bigger table!")
+      expect(review.review_id).toBe(12)
+      expect(typeof review.owner).toBe("string")
+      expect(typeof review.category).toBe("string")
+      expect(typeof review.review_img_url).toBe("string")
+      expect(typeof review.created_at).toBe("string")
+      expect(typeof review.designer).toBe("string")
+    })
+  })
+  test("PATCH - status 200 - if object has additional properties these do not impact comment the vote update", () => {
+    return request(app)
+    .patch("/api/reviews/12")
+    .expect(200)
+    .send({inc_votes: -100, inc_review_id:5})
+    .then((res) => {
+      const {review}=res.body
+      expect(review.votes).toBe(0)
+      expect(review.title).toBe("Scythe; you're gonna need a bigger table!")
+      expect(review.review_id).toBe(12)
+      expect(typeof review.owner).toBe("string")
+      expect(typeof review.category).toBe("string")
+      expect(typeof review.review_img_url).toBe("string")
+      expect(typeof review.created_at).toBe("string")
+      expect(typeof review.designer).toBe("string")
+    })
+  })
+  test ("PATCH - status 400 - review ID not of correct form returns bad request error", () => {
+    return request(app)
+    .patch("/api/reviews/nonsense")
+    .expect(400)
+    .send({inc_votes: -100})
+    .then((res) => {
+    expect(res.body).toEqual({msg:"Error - bad request!"})
+  })
+  })
+  test("PATCH - status 404 - invalid review ID returns ID not found error", ()=> {
+    return request(app)
+    .patch("/api/reviews/3000")
+    .expect(404)
+    .send({inc_votes: -100})
+    .then((res) => {
+    expect(res.body).toEqual({msg:"Error - review ID not found"})
+  })
+  })
+  
+  test ("PATCH - status 400 - if property is missing from the object in the request", () => {
+    return request(app)
+    .patch("/api/reviews/3")
+    .expect(400)
+    .send({})
+    .then((res) => {
+    expect(res.body).toEqual({msg:"Error - bad request, no votes value!"})
+  })
+  })
+
 })
 
 describe("/api/reviews", () => {
