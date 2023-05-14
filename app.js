@@ -14,7 +14,7 @@ app.get("/api/categories", getCategories)
 
 app.get("/api/reviews", getAllReviews)
 
-app.get("/api/reviews/:restaurant_id", getReviews)
+app.get("/api/reviews/:review_id", getReviews)
 
 app.patch("/api/reviews/:review_id", patchReviews)
 

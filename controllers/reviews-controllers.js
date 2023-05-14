@@ -2,8 +2,8 @@ const { fetchReviews, fetchAllReviews, updateReview } = require("../models/revie
 
 exports.getReviews = (req, res, next) => {
     
-    const { restaurant_id } = req.params
-    fetchReviews(restaurant_id).then((review) => {
+    const { review_id } = req.params
+    fetchReviews(review_id).then((review) => {
         res.status(200).send({review})
     })
     .catch(err => {
