@@ -1,7 +1,7 @@
 const express = require("express");
 
 const {getCategories} = require("./controllers/categories-controllers.js");
-const { getReviews, getAllReviews } = require("./controllers/reviews-controllers.js");
+const { getReviews, getAllReviews, patchReviews } = require("./controllers/reviews-controllers.js");
 
 const { getEndpoints } = require("./controllers/endpoints-controller.js");
 const { getComments, postComments } = require("./controllers/comments-controllers.js");
@@ -15,6 +15,8 @@ app.get("/api/categories", getCategories)
 app.get("/api/reviews", getAllReviews)
 
 app.get("/api/reviews/:restaurant_id", getReviews)
+
+app.patch("/api/reviews/:review_id", patchReviews)
 
 app.get("/api/reviews/:review_id/comments", getComments)
 
@@ -44,7 +46,7 @@ app.use((err, req, res, next) => {
   }); 
 
   app.use((err,req,res,next) => {
-
+    
     res.status(500).send({ msg: 'Internal Server Error' })
   })
 
