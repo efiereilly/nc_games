@@ -19,11 +19,26 @@ exports.fetchReviews = (review_id) => {
     })
 }
 
-exports.fetchAllReviews = () => {
-    return connection.query(`SELECT reviews.review_id, title, category, review_img_url, reviews.created_at, reviews.votes, designer, owner,   COUNT(comment_id)::INT AS comment_count FROM reviews
-    LEFT JOIN comments ON comments.review_id = reviews.review_id
+exports.fetchAllReviews = (category) => {
+    console.log(category)
+    const queryValues = [];
+
+    let queryStr = `SELECT reviews.review_id, title, category, review_img_url, reviews.created_at, reviews.votes, designer, owner,   COUNT(comment_id)::INT AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id
+    `;
+  
+    if (category) {
+      queryStr += ` WHERE category = $1 
+      `;
+      queryValues.push(category);
+    }
+
+    queryStr+=   `
     GROUP BY reviews.review_id
-    ORDER BY created_at DESC;`).then((result) =>{
+    ORDER BY created_at DESC;`
+
+    console.log(queryStr)
+
+    return connection.query(queryStr, queryValues).then((result) =>{
         return result.rows
     })
 }
