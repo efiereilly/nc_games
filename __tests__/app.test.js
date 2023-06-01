@@ -185,18 +185,21 @@ describe("/api/reviews", () => {
             })
         })
     })
-})
+    test("GET - status: 200 - can filter review by category", () => {
+      return request(app)
+        .get("/api/reviews?category=strategy")
+        .expect(200)
+        .then((res) => {
+          res.body.reviews.forEach((review)=>{
+              expect(review.category).toBe("strategy")
+          })
+      });
+    });
+}
 
-// test("GET - status: 200 - can filter review by category", () => {
-//   return request(app)
-//     .get("/api/reviews?category=strategy")
-//     .expect(200)
-//     .then((res) => {
-//       res.body.reviews.forEach((review)=>{
-//           expect(review.category).toBe("strategy")
-//       })
-//   });
-// });
+
+)
+
 
 describe("/api/reviews/:review_id/comments", ()=> {
     test ("GET - status 200 - responds with an array of comments for the given review id, each having properties comment_id, votes, created_at, author, body, review_id and sorted by date", ()=>{

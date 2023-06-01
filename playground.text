@@ -1,0 +1,6 @@
+You are now connected to database "nc_games_test" as user "efiereilly".
+ review_id | title | category  |                                 review_img_url                                 |       created_at        | votes |   designer   |      owner      | comment_count 
+-----------+-------+-----------+--------------------------------------------------------------------------------+-------------------------+-------+--------------+-----------------+---------------
+         2 | Jenga | dexterity | https://images.pexels.com/photos/4473494/pexels-photo-4473494.jpeg?w=700&h=700 | 2021-01-18 10:01:41.251 |     5 | Leslie Scott | philippaclaire9 |             3
+(1 row)
+
