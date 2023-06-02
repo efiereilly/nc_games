@@ -195,6 +195,49 @@ describe("/api/reviews", () => {
           })
       });
     });
+    test("GET - status: 200 - can sort by comment count", () => {
+      return request(app)
+        .get("/api/reviews?sort_by=comment_count")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.reviews).toBeSortedBy("comment_count", {
+            descending: true})
+      });
+    });
+    test("GET - status: 200 - can sort by votes", () => {
+      return request(app)
+        .get("/api/reviews?sort_by=votes")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.reviews).toBeSortedBy("votes", {
+            descending: true})
+      });
+    });
+    test("GET - status: 400 - invalid sort test returns error", () => {
+      return request(app)
+        .get("/api/reviews?sort_by=nonsense")
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toEqual({ msg: "invalid sort query!" })
+      });
+    });
+    test("GET - status: 200 - order changes with order queries", () => {
+      return request(app)
+        .get("/api/reviews?order=ASC")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.reviews).toBeSortedBy("created_at", { descending: false});
+        });
+    });
+    test("GET - status: 200 - order changes with order queries", () => {
+      return request(app)
+        .get("/api/reviews?sort_by=votes&order=ASC")
+        .expect(200)
+        .then((res) => {
+          expect(res.body.reviews).toBeSortedBy("votes", { descending: false});
+        });
+    });
+    
 }
 
 
